@@ -1,33 +1,45 @@
-import Navbar from '../pages/components/Navbar';
-import Footer from '../pages/components/Footer';
 import EventCard from '../pages/components/EventCard';
 import { useGlobalContext } from '../pages/context/GlobalState';
+import Layout from '../pages/components/Layout';
 
-export default function Events() {
-  const { rsvps, setRsvps } = useGlobalContext();
+export default function EventsPage() {
+  const { filters } = useGlobalContext();
 
+  // Sample static data (replace with API fetch later)
   const sampleEvents = [
-    { id: 1, title: 'Garage Sale', date: 'Aug 5', location: 'Maple St.' },
-    { id: 2, title: 'Art Fair', date: 'Aug 7', location: 'Main Plaza' }
+    { id: 1, title: 'Garage Sale', date: 'Aug 5', location: 'Maple St.', category: 'community' },
+    { id: 2, title: 'Art Fair', date: 'Aug 7', location: 'Main Plaza', category: 'art' },
+    { id: 3, title: 'Food Truck Rally', date: 'Aug 12', location: 'Park Ave', category: 'food' },
   ];
 
-  const handleRsvp = (event) => {
-    setRsvps([...rsvps, event]);
-  };
+  // Apply filters if set
+  const visibleEvents = sampleEvents.filter(e =>
+    (filters.category ? e.category === filters.category : true) &&
+    (filters.date ? e.date === filters.date : true)
+  );
 
   return (
-    <div>
-      <Navbar />
-      <main className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {sampleEvents.map(event => (
-          <EventCard 
-            key={event.id} 
-            {...event} 
-            onRsvp={() => handleRsvp(event)} 
-          />
-        ))}
-      </main>
-      <Footer />
-    </div>
+    <Layout>
+      <section className="p-6 max-w-5xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4">Upcoming Events</h1>
+
+        {visibleEvents.length === 0 && (
+          <p className="text-gray-500">No events match your filters.</p>
+        )}
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleEvents.map(event => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              date={event.date}
+              location={event.location}
+            />
+          ))}
+        </div>
+      </section>
+    </Layout>
   );
 }
+
