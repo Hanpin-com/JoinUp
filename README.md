@@ -1,40 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# JoinUp - CPAN144 Group Project (Phase 2)
 
-## Getting Started
+## Project Overview
+**Local Loop (JoinUp)** is a community web platform that helps users discover and share neighborhood events like garage sales, workshops, art fairs, and pop-up markets. Our mission is to solve the visibility problem for small-scale local events by providing a centralized platform for event discovery and participation.
 
-First, run the development server:
+## Implemented Features
 
+| Feature | Description |
+|---------|-------------|
+| **Dynamic Event Pages** | Next.js dynamic routes (`/events/[id]`) for detailed event views |
+| **Responsive Layout** | Mobile-first design with Tailwind CSS |
+| **Global State** | Context API for shared event/filter state |
+| **Component Library** | Reusable UI components (EventCard, FilterBar) |
+| **Intuitive Navigation** | Persistent navbar with Next.js routing |
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js ≥18.x
+- npm ≥9.x
+
+### Installation
 ```bash
+# Clone repository
+git clone https://github.com/Hanpin-com/JoinUp.git
+
+# Navigate to project
+cd JoinUp
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Project Structure
+```bash
+joinup/
+├── src/
+│   ├── pages/                   # Next.js route handlers
+│   │   ├── index.js             # Home page (/) 
+│   │   ├── events.js            # Events listing (/events)
+│   │   ├── events/[id].js       # Dynamic event details
+│   │   └── profile.js           # User profile (/profile)
+│   │
+│   ├── components/              # Reusable UI components
+│   │   ├── Layout.js            # Page layout wrapper
+│   │   ├── Navbar.js            # Navigation header
+│   │   ├── Footer.js            # Page footer
+│   │   ├── EventCard.js         # Event preview card
+│   │   └── FilterBar.js         # Event filtering
+│   │
+│   ├── context/                 # State management
+│   │   └── GlobalState.js       # App-wide context
+│   │
+│   └── styles/                  # Global styles
+│       └── globals.css          # Tailwind imports
+│
+├── public/                      # Static assets
+│   ├── screenshots/             # App previews
+│   │   ├── home.png
+│   │   ├── events.png
+│   │   └── profile.png
+├── tailwind.config.js           # Tailwind configuration
+└── package.json
