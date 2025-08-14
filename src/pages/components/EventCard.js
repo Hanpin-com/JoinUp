@@ -1,42 +1,40 @@
-import Link from 'next/link';
-import { useGlobalContext } from '../context/GlobalState';
+import { useAuth } from "../context/AuthContect";
+import { useGlobalContext } from "../context/GlobalState";
 
-export default function EventCard({ id, title, date, location }) {
-  const { rsvps, addRsvp, removeRsvp } = useGlobalContext();
+export default function EventCard({ id, title, date, location, category, onDelete }) {
+  const { user } = useAuth() || {};
+  const { addRsvp, removeRsvp, rsvps } = useGlobalContext() || { rsvps: [], addRsvp: () => {}, removeRsvp: () => {} };
 
-  const isGoing = rsvps.some(e => e.id === id);
+  const isGoing = rsvps.some((e) => e.id === id);
 
-  const handleClick = () => {
-    if (isGoing) {
-      removeRsvp(id);
-    } else {
-      addRsvp({ id, title, date, location });
-    }
+  const toggleRsvp = () => {
+    if (isGoing) removeRsvp(id);
+    else addRsvp({ id, title, date, location, category });
   };
 
   return (
-    <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
-      <h2 className="text-xl font-bold mb-1">{title}</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{date} · {location}</p>
+    <div className="border rounded-2xl p-4 flex flex-col gap-2">
+      <div className="font-semibold">{title}</div>
+      <div className="text-sm text-gray-600">{date} @ {location}</div>
+      {category ? <div className="text-xs text-gray-500">{category}</div> : null}
 
-      {/* RSVP Button */}
-      <button
-        onClick={handleClick}
-        className={`mt-3 px-4 py-1 rounded text-white transition-colors 
-          ${isGoing ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-600'}
-        `}
-      >
-        {isGoing ? 'RSVPed' : 'RSVP'}
-      </button>
-
-      {/* Link to event details page */}
-      <div className="mt-2">
-        <Link
-          href={`/events/${id}`}
-          className="text-blue-600 hover:underline dark:text-blue-400"
+      <div className="mt-2 flex items-center gap-2">
+        <button
+          onClick={toggleRsvp}
+          className={`rounded-lg px-3 py-1.5 text-sm ${isGoing ? "bg-green-600 text-white" : "bg-blue-600 text-white"}`}
         >
-          View details
-        </Link>
+          {isGoing ? "Cancel RSVP" : "RSVP"}
+        </button>
+
+        {}
+        <button
+          onClick={onDelete}
+          disabled={!user}
+          className="rounded-lg px-3 py-1.5 text-sm border hover:bg-gray-50 disabled:opacity-50"
+          title={!user ? "Sign in to delete events" : "Delete this event"}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
