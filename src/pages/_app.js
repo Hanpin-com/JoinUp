@@ -1,12 +1,13 @@
-import '../styles/globals.css';
-import { GlobalProvider } from '../pages/context/GlobalState';
+import "../styles/globals.css";
+import { GlobalProvider } from "../pages/context/GlobalState";
+import { AuthProvider } from "../pages/context/AuthContect"; 
 
-function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   return (
-    <GlobalProvider>
-      <Component {...pageProps} />
-    </GlobalProvider>
+    <AuthProvider>
+      <GlobalProvider>
+        <Component {...pageProps} />
+      </GlobalProvider>
+    </AuthProvider>
   );
 }
-
-export default MyApp;

@@ -1,45 +1,34 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useMemo, useState } from "react";
 
-const GlobalContext = createContext();
+const GlobalContext = createContext(null);
 
-export const GlobalProvider = ({ children }) => {
+export function GlobalProvider({ children }) {
+  // Filters for events list
+  const [filters, setFilters] = useState({ query: "", category: "", date: "" });
+
+  // RSVP state (array of event objects: { id, title, date, location, ... })
   const [rsvps, setRsvps] = useState([]);
-  const [filters, setFilters] = useState({ category: '', date: '' });
-
-  // Load RSVPs from localStorage on first render
-  useEffect(() => {
-    const saved = localStorage.getItem('rsvps');
-    if (saved) setRsvps(JSON.parse(saved));
-  }, []);
-
-  // Save RSVPs to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('rsvps', JSON.stringify(rsvps));
-  }, [rsvps]);
 
   const addRsvp = (event) => {
-    if (!rsvps.some(e => e.id === event.id)) {
-      setRsvps(prev => [...prev, event]);
-    }
+    setRsvps((prev) => {
+      if (prev.some((e) => e.id === event.id)) return prev; // avoid duplicates
+      return [...prev, event];
+    });
   };
 
-  const removeRsvp = (id) => {
-    setRsvps(prev => prev.filter(e => e.id !== id));
+  const removeRsvp = (eventId) => {
+    setRsvps((prev) => prev.filter((e) => e.id !== eventId));
   };
 
-  return (
-    <GlobalContext.Provider
-      value={{
-        rsvps,
-        filters,
-        setFilters,
-        addRsvp,
-        removeRsvp
-      }}
-    >
-      {children}
-    </GlobalContext.Provider>
+  const value = useMemo(
+    () => ({ filters, setFilters, rsvps, addRsvp, removeRsvp }),
+    [filters, rsvps]
   );
-};
 
-export const useGlobalContext = () => useContext(GlobalContext);
+  return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
+}
+
+export function useGlobalContext() {
+  const ctx = useContext(GlobalContext);
+  return ctx; 
+}
