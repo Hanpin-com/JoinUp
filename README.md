@@ -21,7 +21,7 @@
 ---
 
 ## 🧪 Test Account
-Log in instantly with the following credentials:
+Log in instantly with the following credentials:  
 Email: customer@example.com  
 Password: joinup123
 
