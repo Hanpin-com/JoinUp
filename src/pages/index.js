@@ -24,14 +24,6 @@ export default function HomePage() {
             >
               Explore Events
             </Link>
-            {!user && (
-              <Link
-                href="/login"
-                className="bg-blue-800 text-white font-semibold px-6 py-3 rounded-xl shadow hover:bg-blue-900"
-              >
-                Sign In
-              </Link>
-            )}
           </div>
         </div>
       </section>

@@ -9,9 +9,24 @@
 |---------|-------------|
 | **Dynamic Event Pages** | Next.js dynamic routes (`/events/[id]`) for detailed event views |
 | **Responsive Layout** | Mobile-first design with Tailwind CSS |
-| **Global State** | Context API for shared event/filter state |
-| **Component Library** | Reusable UI components (EventCard, FilterBar) |
-| **Intuitive Navigation** | Persistent navbar with Next.js routing |
+| **Global State Management** | Context API for shared event/filter state |
+| **Component Library** | Reusable UI components (EventCard, FilterBar, Layout, Navbar) |
+| **Authentication System** | Customer login & logout using a custom `AuthContext` |
+| **Sign-Up Feature** | Users can create their own accounts directly from the home page |
+| **Event Management** | Logged-in users can add and delete event cards; logged-out users can still view events |
+| **Test Account Access** | Pre-set credentials for quick exploration without sign-up |
+| **User-Friendly Navigation** | Persistent navbar, home-page CTAs, and "Back to Home" button on login page |
+| **Hero & Feature Sections** | Engaging home page with clear descriptions of platform benefits |
+
+---
+
+## 🧪 Test Account
+Log in instantly with the following credentials:
+Email: customer@example.com
+Password: joinup123
+
+---
+
 
 ## 🚀 Getting Started
 
@@ -37,29 +52,32 @@ npm run dev
 ```bash
 joinup/
 ├── src/
-│   ├── pages/                   # Next.js route handlers
-│   │   ├── index.js             # Home page (/) 
-│   │   ├── events.js            # Events listing (/events)
-│   │   ├── events/[id].js       # Dynamic event details
-│   │   └── profile.js           # User profile (/profile)
+│   ├── pages/                   
+│   │   ├── index.js             # Home page with hero, features, and test account info
+│   │   ├── events.js            # Events listing (filters + event cards)
+│   │   ├── events/[id].js       # Dynamic event detail page
+│   │   ├── login.js             # Customer login page (with back-to-home button)
+│   │   ├── signup.js            # Sign-up page for creating new accounts
+│   │   └── profile.js           # User profile page
 │   │
-│   ├── components/              # Reusable UI components
+│   ├── components/              
 │   │   ├── Layout.js            # Page layout wrapper
 │   │   ├── Navbar.js            # Navigation header
 │   │   ├── Footer.js            # Page footer
-│   │   ├── EventCard.js         # Event preview card
-│   │   └── FilterBar.js         # Event filtering
+│   │   ├── EventCard.js         # Event preview card with RSVP & delete option
+│   │   └── FilterBar.js         # Event filtering UI
 │   │
-│   ├── context/                 # State management
-│   │   └── GlobalState.js       # App-wide context
+│   ├── context/                 
+│   │   ├── AuthContext.js       # Authentication context
+│   │   └── GlobalState.js       # App-wide state management
 │   │
-│   └── styles/                  # Global styles
-│       └── globals.css          # Tailwind imports
+│   └── styles/                  
+│       └── globals.css          # Tailwind global styles
 │
-├── public/                      # Static assets
+├── public/                      
 │   ├── screenshots/             # App previews
 │   │   ├── home.png
 │   │   ├── events.png
 │   │   └── profile.png
-├── tailwind.config.js           # Tailwind configuration
-└── package.json
+├── tailwind.config.js           
+└── package.json              
