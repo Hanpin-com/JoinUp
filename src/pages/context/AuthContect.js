@@ -5,11 +5,11 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);   // { email }
-  const [token, setToken] = useState(null); // demo token
+  const [user, setUser] = useState(null);        // { email }
+  const [token, setToken] = useState(null);      // demo token
   const [loading, setLoading] = useState(true);
 
-  // hydrate from localStorage on first load (client-side)
+  // hydrate from localStorage
   useEffect(() => {
     try {
       const t = localStorage.getItem("joinup_token");
@@ -23,19 +23,37 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    // demo call to our API route
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-
     if (!res.ok) {
-      const { message } = await res.json();
-      throw new Error(message || "Login failed");
+      let message = "Login failed";
+      try { ({ message } = await res.json()); } catch {}
+      throw new Error(message);
     }
+    const data = await res.json(); // { token, user }
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem("joinup_token", data.token);
+    localStorage.setItem("joinup_user", JSON.stringify(data.user));
+    return data;
+  };
 
-    const data = await res.json(); // { token, user: { email } }
+  // ✅ NEW: register
+  const register = async (email, password) => {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      let message = "Sign up failed";
+      try { ({ message } = await res.json()); } catch {}
+      throw new Error(message);
+    }
+    const data = await res.json(); // { token, user }
     setToken(data.token);
     setUser(data.user);
     localStorage.setItem("joinup_token", data.token);
@@ -53,10 +71,11 @@ export function AuthProvider({ children }) {
     router.push("/");
   };
 
-  const value = useMemo(() => ({ user, token, loading, login, logout }), [user, token, loading]);
+  const value = useMemo(() => ({ user, token, loading, login, register, logout }), [user, token, loading]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   return useContext(AuthContext);
 }
+
