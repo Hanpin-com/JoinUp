@@ -22,7 +22,7 @@
 
 ## 🧪 Test Account
 Log in instantly with the following credentials:
-Email: customer@example.com
+Email: customer@example.com  
 Password: joinup123
 
 ---
@@ -49,7 +49,6 @@ npm install
 npm run dev
 
 ## Project Structure
-```bash
 joinup/
 ├── src/
 │   ├── pages/                   
